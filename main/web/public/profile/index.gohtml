@@ -1,0 +1,12 @@
+{{define "title"}}Profile{{end}}
+{{define "content"}}
+    {{template "topdoc"}}
+
+    {{template "navbar" .}}
+
+    {{if .LoggedIn}}
+        You Are logged in!
+    {{end}}
+
+    {{template "botdoc"}}
+{{end}}

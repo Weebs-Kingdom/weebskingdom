@@ -1,0 +1,76 @@
+{{define "title"}}Login{{end}}
+{{define "content"}}
+    {{template "topdoc"}}
+
+
+    {{template "navbar" .}}
+
+    {{if not .LoggedIn}}
+        <div id="login" class="container">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input v-model="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input v-model="password" type="password" class="form-control" id="password">
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <button @click="login()" class="btn btn-primary align-center">Submit</button>
+            </div>
+            <div class="mb-5 d-flex justify-content-center">
+                <p> Don't have an account? <a href="/register">Register</a> now!</p>
+            </div>
+        </div>
+
+        <script>
+            var main = new Vue({
+                el: '#login',
+                data: {
+                    email: '',
+                    password: ''
+                },
+                methods: {
+                    login: async function () {
+                        if (this.email == '' || this.password == '') {
+                            alert('Please fill in all fields')
+                            return
+                        }
+
+                        await fetch('/api/dev/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: this.email,
+                                password: this.password
+                            })
+                        }).then(response => response.json()).then(response => {
+                            if (response.status == 200) {
+                                this.storeLoginCookie(response.token, 2)
+                                window.location.href = '/'
+                            } else {
+                                alert('Invalid email or password')
+                            }
+                        })
+                    },
+                    storeLoginCookie: function (token, days) {
+                        let d = new Date()
+                        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000))
+                        let expires = "expires=" + d.toUTCString()
+                        document.cookie = "auth=" + token + ";" + expires + ";path=/"
+                    }
+                }
+            })
+        </script>
+    {{else}}
+        <div class="px-4 py-3 my-5">
+            <div class=" mt-3 shadow rounded p-3 px-5 text-center">
+                <div class="lead">You are already logged in!</div>
+            </div>
+        </div>
+    {{end}}
+    {{template "botdoc"}}
+{{end}}

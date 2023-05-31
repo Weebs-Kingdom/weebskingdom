@@ -1,0 +1,62 @@
+{{define "navbar"}}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-5" aria-label="Twelfth navbar example">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample10"
+                    aria-controls="navbarsExample10" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Projects</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/projects/yukisora">Yuki Sora suit</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    {{if .LoggedIn}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    {{else}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                    {{end}}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{{end}}
+
+{{define "btndarkmode"}}
+
+{{end}}
+
+{{define "app"}}
+    <weeb-app id="app">
+        <!--Loading-->
+        <div class="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </weeb-app>
+
+    <script>
+        let main = new Vue({
+            'el': '#app',
+            created: async function () {
+                await initApp()
+            }
+        })
+    </script>
+{{end}}
