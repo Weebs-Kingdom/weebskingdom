@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
-	"weebskingdom/main/api"
-	"weebskingdom/main/core"
-	"weebskingdom/main/crypt"
-	"weebskingdom/main/database"
+	"weebskingdom/api"
+	"weebskingdom/core"
+	"weebskingdom/crypt"
+	"weebskingdom/database"
 )
 
 func main() {

@@ -1,17 +1,16 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"strings"
-	"weebskingdom/main/api/middleware"
-	"weebskingdom/main/crypt"
-	"weebskingdom/main/database"
-	"weebskingdom/main/database/models"
+	"weebskingdom/api/middleware"
+	"weebskingdom/crypt"
+	"weebskingdom/database"
+	"weebskingdom/database/models"
 )
 
 func InitApi(r *gin.Engine) {
@@ -48,7 +47,6 @@ func initApis(r *gin.RouterGroup) {
 			return
 		}
 
-		fmt.Println(register.Email)
 		email := database.MongoDB.Collection("user").FindOne(c, bson.M{
 			"email": strings.ToLower(register.Email),
 		})

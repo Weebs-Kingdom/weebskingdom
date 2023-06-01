@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
-	"weebskingdom/main/api/webLogic"
+	"weebskingdom/api/webLogic"
 )
 
 var tmpl = map[string]*template.Template{}
@@ -21,7 +21,7 @@ func LoadTemplates(r *gin.Engine) {
 
 	fmt.Println("Loading templates...")
 	// Walk through the "templates" folder and all its subdirectories
-	nerr := filepath.Walk("main/web/templates", func(path string, info os.FileInfo, err error) error {
+	nerr := filepath.Walk("web/templates", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -47,7 +47,7 @@ func LoadTemplates(r *gin.Engine) {
 	fmt.Println("\n\nLoading sites...")
 
 	// Walk through the "public" folder and all its subdirectories
-	err := filepath.Walk("main/web/public", func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk("web/public", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -55,7 +55,7 @@ func LoadTemplates(r *gin.Engine) {
 		// Check if the file is an HTML template
 		if !info.IsDir() && strings.HasSuffix(info.Name(), ".gohtml") {
 			// Get the directory path (relative to the "public" folder)
-			relPath, err := filepath.Rel("main/web/public", filepath.Dir(path))
+			relPath, err := filepath.Rel("web/public", filepath.Dir(path))
 			if err != nil {
 				return err
 			}
@@ -120,7 +120,7 @@ func handler(c *gin.Context) {
 func LoadServerAssets(r *gin.Engine) {
 	fmt.Println("Loading assets...")
 	// Walk through the "assets" folder and all its subdirectories
-	err := filepath.Walk("main/web/assets", func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk("web/assets", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -128,7 +128,7 @@ func LoadServerAssets(r *gin.Engine) {
 		// Check if the file is not a directory
 		if !info.IsDir() {
 			// Get the directory path (relative to the "public" folder)
-			relPath, err := filepath.Rel("main/web/assets", path)
+			relPath, err := filepath.Rel("web/assets", path)
 			if err != nil {
 				return err
 			}

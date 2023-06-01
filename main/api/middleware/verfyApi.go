@@ -1,13 +1,12 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"weebskingdom/main/crypt"
-	"weebskingdom/main/database"
-	"weebskingdom/main/database/models"
+	"weebskingdom/crypt"
+	"weebskingdom/database"
+	"weebskingdom/database/models"
 )
 
 //check if the header has the api key
@@ -25,7 +24,6 @@ func LoginToken() gin.HandlerFunc {
 		}
 
 		if err != nil {
-			fmt.Println("No token")
 			if ignoreAuth {
 				c.Next()
 				return
@@ -37,7 +35,6 @@ func LoginToken() gin.HandlerFunc {
 			return
 		}
 		if token == "" {
-			fmt.Println("No token")
 			//Check if ignoreAuth is true and if it is, ignore the auth
 			if ignoreAuth {
 				c.Next()
@@ -52,7 +49,6 @@ func LoginToken() gin.HandlerFunc {
 
 		jwt, err := crypt.ParseJwt(token)
 		if err != nil {
-			fmt.Println("Invalid token")
 			if ignoreAuth {
 				c.Next()
 				return
@@ -66,7 +62,6 @@ func LoginToken() gin.HandlerFunc {
 
 		id, err := primitive.ObjectIDFromHex(jwt["userId"].(string))
 		if err != nil {
-			fmt.Println("Invalid token")
 			if ignoreAuth {
 				c.Next()
 				return
@@ -83,7 +78,6 @@ func LoginToken() gin.HandlerFunc {
 		})
 
 		if res.Err() != nil {
-			fmt.Println("User not found")
 			if ignoreAuth {
 				c.Next()
 				return
@@ -98,7 +92,6 @@ func LoginToken() gin.HandlerFunc {
 		//check time
 		if jwt["exp"] != nil {
 			if jwt["exp"].(float64) < jwt["iat"].(float64) {
-				fmt.Println("Token expired")
 				if ignoreAuth {
 					c.Next()
 					return

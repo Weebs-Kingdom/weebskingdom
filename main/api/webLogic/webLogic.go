@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"reflect"
-	"weebskingdom/main/api/middleware"
-	"weebskingdom/main/database/models"
+	"weebskingdom/api/middleware"
+	"weebskingdom/database/models"
 )
 
 func GetLogicData(c *gin.Context, path string) interface{} {

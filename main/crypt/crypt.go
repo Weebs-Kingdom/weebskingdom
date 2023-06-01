@@ -15,7 +15,7 @@ import (
 )
 
 func rsaConfigSetup() *rsa.PrivateKey {
-	priv, err := ioutil.ReadFile("main/private.pem")
+	priv, err := ioutil.ReadFile("private.pem")
 	if err != nil {
 		log.Print("No RSA private key found, generating temp one")
 		return generatePrivateKey(4096)
