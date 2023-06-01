@@ -1,22 +1,24 @@
 {{define "navbar"}}
-    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-5" aria-label="Twelfth navbar example">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-5">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample10"
-                    aria-controls="navbarsExample10" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                    aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample10">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse w-100" id="navbar">
+                <div style="width: 130px" class="ms-4 d-none d-sm-block">
+                </div>
+                <ul class="navbar-nav d-flex w-100 align-items-center justify-content-md-center">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Projects</a>
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Yuki Sora</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/projects/yukisora">Yuki Sora suit</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="/yukisora">About Yuki</a></li>
+                            <li><a class="dropdown-item" href="/partner">Partner Program</a></li>
+                            <li><a class="dropdown-item" href="/contact">Contact</a></li>
                         </ul>
                     </li>
                     {{if .LoggedIn}}
@@ -32,31 +34,55 @@
                         </li>
                     {{end}}
                 </ul>
+                <div class="me-4 d-none d-sm-block">
+                    {{template "btndarkmode"}}
+                </div>
             </div>
         </div>
     </nav>
 {{end}}
 
 {{define "btndarkmode"}}
+    <input type="checkbox" class="switch-inp" id="btnSwitchColorMode" checked/>
 
+    <div class="switch-btn p-2">
+        <label class="switch-lbl" for="btnSwitchColorMode">
+            <div class="icons">
+                <span class="material-icons">light_mode</span>
+                <span class="material-icons">dark_mode</span>
+            </div>
+        </label>
+    </div>
 {{end}}
 
 {{define "app"}}
     <weeb-app id="app">
         <!--Loading-->
-        <div class="loading">
+        <div class="loading flex-column h-100 align-items-center d-flex justify-content-center">
             <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
+            <div class="flex-column align-items-center d-flex justify-content-center" id="lateMsg">
+                <p>Loading...</p>
+                <p v-if="late">This is taking longer than expected 🤔</p>
+            </div>
+            <div class="flex-row align-items-center d-flex justify-content-center" id="lateBtn">
+                <button v-if="late" class='btn btn-primary' @click='home()'>Home</button>
+                <button v-if="late" class='btn btn-primary ms-3' @click='reload()'>Reload</button>
+            </div>
         </div>
+        <script src="/assets/script/appVue.js"></script>
     </weeb-app>
+{{end}}
 
-    <script>
-        let main = new Vue({
-            'el': '#app',
-            created: async function () {
-                await initApp()
-            }
-        })
-    </script>
+{{define "underConstruction"}}
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold text-body-emphasis">Under construction</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">This site and its corresponding features are currently under construction</p>
+            <div class="col">
+                <img class="rounded-3" src="https://media0.giphy.com/media/kHfUyPaDUDBY11l4DZ/200.webp?cid=ecf05e47qqumsu9kig0w980lbogsoxbjdhh7wx7cqu1d97l3&ep=v1_gifs_search&rid=200.webp&ct=g">
+            </div>
+        </div>
+    </div>
 {{end}}

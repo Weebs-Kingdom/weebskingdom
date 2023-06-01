@@ -1,0 +1,29 @@
+{{define "discordModal"}}
+    <div class="modal fade" id="activationModel" tabindex="-1" aria-labelledby="activationModel">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header border-bottom-0">
+                    <div class="w-100 d-flex justify-content-center">
+                        <h1 class="modal-title text-light fs-5">Discord Connection</h1>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-0 text-body-emphasis">
+                    <p>Hello dear user</p>
+                    <p>You haven't connected your <b>Discord Account</b> to <b>Weebs Kingdom</b> yet!</p>
+                    <p>This means your missing out on our <b>greatest features!</b></p>
+                    <p>Every new connected member gets <b>1000 weaboos</b> as a bonus!</p>
+                </div>
+                <div style="width: fit-content" class="modal-footer flex-column justify-content-center w-100 gap-2 pb-3 border-top-0">
+                    <a style="width: fit-content" type="button" class="btn btn-lg btn-secondary" href="/connect">Show me first</a>
+                    <a style="width: fit-content" type="button" class="btn btn-lg btn-primary" href="/connect/discord">Lets connect!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const myModal = new bootstrap.Modal(document.getElementById('activationModel'), {})
+        myModal.show()
+    </script>
+{{end}}

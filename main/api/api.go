@@ -126,9 +126,12 @@ func initApis(r *gin.RouterGroup) {
 				return
 			}
 			_, err2 := database.MongoDB.Collection("user").InsertOne(c, models.User{
-				ID:       primitive.NewObjectID(),
-				Email:    strings.ToLower(register.Email),
-				Password: password,
+				ID:                primitive.NewObjectID(),
+				Email:             strings.ToLower(register.Email),
+				Password:          password,
+				IsVerifiedDiscord: false,
+				IsAdmin:           false,
+				IsDeveloper:       false,
 			})
 
 			if err2 != nil {

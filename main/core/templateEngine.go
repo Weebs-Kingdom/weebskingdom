@@ -112,6 +112,7 @@ func handler(c *gin.Context) {
 	if err != nil {
 		// If there's an error executing the templates, return a 500 error
 		c.String(http.StatusInternalServerError, "Internal Server Error")
+		fmt.Println("Error executing template:", err)
 		return
 	}
 }

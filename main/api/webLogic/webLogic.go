@@ -1,39 +1,57 @@
 package webLogic
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"reflect"
 	"weebskingdom/main/api/middleware"
+	"weebskingdom/main/database/models"
 )
 
 func GetLogicData(c *gin.Context, path string) interface{} {
 	//check if path exists in templateMap
 	c.Set("ignoreAuth", true)
-	if _, ok := templateMap[path]; !ok {
-		return map[string]interface{}{
-			"LoggedIn": isLoggedIn(c),
+
+	var data interface{} = nil
+	if _, ok := templateMap[path]; ok {
+		data = templateMap[path](c)
+	} else {
+		data = templateMap[""](c)
+	}
+	dat := make(map[string]interface{})
+
+	dataType := reflect.TypeOf(data)
+	dataValue := reflect.ValueOf(data)
+	// Iterate over the fields of the struct
+	for i := 0; i < dataType.NumField(); i++ {
+		field := dataType.Field(i)
+		value := dataValue.Field(i).Interface()
+		dat[field.Name] = value
+	}
+
+	loggedIn := isLoggedIn(c)
+	dat["LoggedIn"] = loggedIn
+	if loggedIn {
+		data, exists := c.Get("user")
+		var userData models.User
+		if exists {
+			userData = data.(models.User)
+			dat["User"] = userData
+		} else {
+			dat["User"] = nil
+		}
+
+		data, exists = c.Get("userId")
+		if exists {
+			dat["UserId"] = data
+		} else {
+			dat["UserId"] = nil
 		}
 	} else {
-		data := templateMap[path](c)
-		dat := make(map[string]interface{})
-
-		dataType := reflect.TypeOf(data)
-		dataValue := reflect.ValueOf(data)
-
-		// Iterate over the fields of the struct
-		for i := 0; i < dataType.NumField(); i++ {
-			field := dataType.Field(i)
-			value := dataValue.Field(i).Interface()
-			dat[field.Name] = value
-		}
-
-		dat["LoggedIn"] = isLoggedIn(c)
-
-		fmt.Print("Logic data for " + path + " " + fmt.Sprint(dat) + "\n")
-		return dat
 	}
+
+	return dat
+
 }
 
 var randomWelcomePhrases = []string{
@@ -103,8 +121,15 @@ type Index struct {
 	RandomWelcomeMessage string
 }
 
+type DefaultStruct struct {
+}
+
+type Profile struct {
+}
+
 var templateMap = map[string]func(c *gin.Context) any{
-	".app": index,
+	".": index,
+	"":  defaultStruct,
 	// Add more entries as needed
 }
 
@@ -115,6 +140,10 @@ func index(c *gin.Context) any {
 	return Index{
 		RandomWelcomeMessage: randomWelcomePhrase,
 	}
+}
+
+func defaultStruct(c *gin.Context) any {
+	return DefaultStruct{}
 }
 
 func isLoggedIn(c *gin.Context) bool {

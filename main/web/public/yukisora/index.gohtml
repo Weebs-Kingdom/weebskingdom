@@ -1,0 +1,62 @@
+{{define "title"}}Yuki Sora{{end}}
+{{define "content"}}
+    {{template "topdoc"}}
+
+    {{template "navbar" .}}
+
+    <div class="container px-4 py-5">
+        <div class="text-center">
+            <h2 class="pb-2 border-bottom text-body-emphasis">YukiSora - Community Bot</h2>
+        </div>
+
+        <div class="row gap-4 py-5">
+            <div class="col d-flex flex-column align-items-start gap-2">
+                <h2 class="fw-bold text-body-emphasis">Connect and Engage with YukiSora</h2>
+                <p class="text-body-secondary">YukiSora is more than just a bot. It's an essential part of our community, connecting people and enhancing interactions within your Discord server.</p>
+                <h2 class="fw-bold text-body-emphasis">Talk to us!</h2>
+                <p class="text-body-secondary">We value your input and feedback. Your voice matters in shaping YukiSora and making it better for everyone. Whether you have feature requests, constructive criticism, or bug reports, we encourage you to reach out to us.</p>
+                <p class="text-body-secondary">Our team is dedicated to providing the best possible experience, and your feedback plays a vital role in that process. We are constantly listening to our community, learning from your suggestions, and working on improvements.</p>
+                <p class="text-body-secondary">So don't hesitate to talk to us! Share your ideas, let us know what you love about YukiSora, and where we can make it even more amazing. Together, we can create a bot that exceeds your expectations and serves your community's needs.</p>
+                <a class="btn btn-primary" href="/contact">Contact</a>
+            </div>
+
+            <div class="col">
+                <div class="row row-cols-1 row-cols-sm-2 g-4">
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <span class="material-icons">music_note</span>
+                        </div>
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Music Slaves</h4>
+                        <p class="text-body-secondary">Unleash the power of music with YukiSora's extensive music commands. Play high-quality music from various sources and create unforgettable listening experiences for your community.</p>
+                    </div>
+
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <span class="material-icons">emoji_events</span>
+                        </div>
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Interactive Games</h4>
+                        <p class="text-body-secondary">Engage your community with interactive games and activities provided by YukiSora. Foster interaction, camaraderie, and fun among your members.</p>
+                    </div>
+
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <span class="material-icons">security</span>
+                        </div>
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Moderation Tools</h4>
+                        <p class="text-body-secondary">Keep your community safe and enjoyable using YukiSora's powerful moderation features and automod capabilities. Maintain a harmonious environment with ease.</p>
+                    </div>
+
+                    <div class="col d-flex flex-column gap-2">
+                        <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-4 rounded-3">
+                            <span class="material-icons">settings</span>
+                        </div>
+                        <h4 class="fw-semibold mb-0 text-body-emphasis">Customization Options</h4>
+                        <p class="text-body-secondary">Tailor YukiSora to fit your community's needs by personalizing its settings and commands. Customize the bot to align with your server's unique preferences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{template "botdoc"}}
+{{end}}
