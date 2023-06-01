@@ -1,8 +1,11 @@
 {{define "title"}}Profile{{end}}
+{{define "featureDisabledDescription"}}User and Profile{{end}}
 {{define "content"}}
     {{template "topdoc"}}
 
     {{template "navbar" .}}
+    {{template "featureDisabled"}}
+
 
     {{if .LoggedIn}}
         {{if .User.IsVerifiedDiscord}}

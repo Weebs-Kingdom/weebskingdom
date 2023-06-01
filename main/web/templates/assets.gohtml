@@ -1,3 +1,17 @@
+{{define "workInProgressTooltip"}}
+    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="
+    That means:
+    <ul>
+        <li>The website is not in its final state</li>
+        <li>The design may change over time</li>
+        <li>Some features are disabled</li>
+        <li>Some features are not fully implemented</li>
+        <li>Some features are not fully tested</li>
+        <li>Some features are not fully optimized</li>
+    </ul>
+    "
+{{end}}
+
 {{define "navbar"}}
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-5">
         <div class="container-fluid">
@@ -5,16 +19,27 @@
                     aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <div style="width: fit-content; font-size: 0.9rem" {{template "workInProgressTooltip"}}
+                 class="d-block d-lg-none p-1 bg-danger rounded shadow-3 d-flex justify-content-center align-items-center">
+                <div class="fs-small text-center">This site is work in progress!</div>
+            </div>
 
             <div class="collapse navbar-collapse w-100" id="navbar">
                 <div style="width: 130px" class="ms-4 d-none d-sm-block">
+                    <div class="text-light-emphasis d-flex justify-content-center align-items-center">
+                        <div style="width: fit-content; font-size: 0.7rem" {{template "workInProgressTooltip"}}
+                             class="p-1 bg-danger rounded shadow-3 d-flex justify-content-center align-items-center">
+                            <div class="fs-small text-center">This site is work in progress!</div>
+                        </div>
+                    </div>
                 </div>
                 <ul class="navbar-nav d-flex w-100 align-items-center justify-content-md-center">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Yuki Sora</a>
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Yuki
+                            Sora</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/yukisora">About Yuki</a></li>
                             <li><a class="dropdown-item" href="/partner">Partner Program</a></li>
@@ -40,6 +65,10 @@
             </div>
         </div>
     </nav>
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
 {{end}}
 
 {{define "btndarkmode"}}
@@ -81,8 +110,24 @@
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4">This site and its corresponding features are currently under construction</p>
             <div class="col">
-                <img class="rounded-3" src="https://media0.giphy.com/media/kHfUyPaDUDBY11l4DZ/200.webp?cid=ecf05e47qqumsu9kig0w980lbogsoxbjdhh7wx7cqu1d97l3&ep=v1_gifs_search&rid=200.webp&ct=g">
+                <img class="rounded-3"
+                     src="https://media0.giphy.com/media/kHfUyPaDUDBY11l4DZ/200.webp?cid=ecf05e47qqumsu9kig0w980lbogsoxbjdhh7wx7cqu1d97l3&ep=v1_gifs_search&rid=200.webp&ct=g">
             </div>
+        </div>
+    </div>
+{{end}}
+
+{{define "featureDisabled"}}
+    <div class="text-light-emphasis d-flex justify-content-center align-items-center">
+        <div style="width: fit-content;"
+             class="bg-danger px-4 py-3 my-5 rounded shadow-3 d-flex flex-row justify-content-center align-items-center">
+            <span class="fs-1 material-icons mb-2">warning</span>
+            <div class="d-flex flex-column justify-content-center text-center">
+                <p class="fs-3">Note that the {{template "featureDisabledDescription"}} features are enabled for testing
+                    purposes.</p>
+                <p class="fs-3">All data will be removed on the final release!</p>
+            </div>
+            <span class="fs-1 material-icons ms-2">warning</span>
         </div>
     </div>
 {{end}}

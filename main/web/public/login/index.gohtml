@@ -1,9 +1,11 @@
 {{define "title"}}Login{{end}}
+{{define "featureDisabledDescription"}}Login and Registation{{end}}
 {{define "content"}}
     {{template "topdoc"}}
 
 
     {{template "navbar" .}}
+    {{template "featureDisabled"}}
 
     {{if not .LoggedIn}}
         <div id="login" class="container">
