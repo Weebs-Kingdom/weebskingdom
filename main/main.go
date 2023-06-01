@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
+	"os"
 	"weebskingdom/api"
 	"weebskingdom/core"
 	"weebskingdom/crypt"
@@ -23,5 +24,10 @@ func main() {
 	core.LoadTemplates(r)
 	core.LoadServerAssets(r)
 
-	r.Run()
+	//set address
+	address := ""
+	if os.Getenv("ADDRESS") != "" {
+		address = os.Getenv("ADDRESS")
+	}
+	r.Run(address)
 }
