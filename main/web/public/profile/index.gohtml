@@ -20,11 +20,13 @@
         {{end}}
     {{else}}
         <div class="d-flex flex-column justify-content-center align-items-center">
-        <div style="width: fit-content" class="mt-5 shadow rounded py-3 px-5 text-center">
-            <div class="bs-light-text-emphasis">You are not logged in!
+            <div style="width: fit-content" class="mt-5 shadow rounded py-3 px-5 text-center">
+                <div class="bs-light-text-emphasis">You are not logged in!
+                </div>
             </div>
         </div>
     {{end}}
 
+    {{template "footer"}}
     {{template "botdoc"}}
 {{end}}

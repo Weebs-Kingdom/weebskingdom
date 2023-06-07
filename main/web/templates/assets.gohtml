@@ -12,6 +12,37 @@
     "
 {{end}}
 
+{{define "footer"}}
+    <footer class="bg-body-tertiary text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h5>Legal</h5>
+                    <ul class="nav justify-content-center border-bottom pb-3 mb-3d">
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/bot-terms">Yuki Sora Terms of Service</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/website-terms">Weebs Kingdom Terms and Conditions</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/privacy-policy">Privacy Policy</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/dsgvo">DSGVO</a></li>
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <h5>Useful Links</h5>
+                    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/faq">FAQ</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/contact">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/about/us">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-12 text-center">
+                    <p>&copy; 2023 Weebs Kingdom. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{{end}}
+
 {{define "navbar"}}
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-5">
         <div class="container-fluid">
@@ -37,25 +68,42 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
+                    <li class="nav-item dropdown selectable">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Weebs
+                            Kingdom</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/about/us">About Us</a></li>
+                            <li><a class="dropdown-item" href="/about/member">Our Member</a></li>
+                            <li><a class="dropdown-item" href="/about/support">Our Supporter</a></li>
+                            <li><a class="dropdown-item" href="/about/streamer">Our Streamer</a></li>
+                            <li><a class="dropdown-item" href="/about/partner">Our Partner</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Yuki
                             Sora</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/yukisora">About Yuki</a></li>
+                            <li><a class="dropdown-item" href="/change">Change Log</a></li>
                             <li><a class="dropdown-item" href="/partner">Partner Program</a></li>
-                            <li><a class="dropdown-item" href="/contact">Contact</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active btn btn-secondary p-1 px-2" aria-current="page" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="ms-4 me-4"></div>
                     </li>
                     {{if .LoggedIn}}
                         <li class="nav-item">
                             <a class="nav-link" href="/profile">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/logout">Logout</a>
+                            <a class="btn btn-danger ms-2 p-1 px-3" href="/logout">Logout</a>
                         </li>
                     {{else}}
                         <li class="nav-item">
-                            <a class="nav-link" href="/login">Login</a>
+                            <a class="btn btn-primary p-1 px-3" href="/login">Login</a>
                         </li>
                     {{end}}
                 </ul>
@@ -130,4 +178,39 @@
             <span class="fs-1 material-icons ms-2">warning</span>
         </div>
     </div>
+{{end}}
+
+{{define "teammember"}}
+    <div class="d-flex flex-row align-items-grow flex-wrap gap-3 ">
+        {{range .TeamMembers}}
+            <div class="card shadow flex-fill flex-grow" style="width: 45%">
+                <div class="p-3 card-body">
+                    <div class="d-flex justify-content-start align-items-center gap-2">
+                        <img class="w-25 shadow rounded-circle"
+                             src="{{.Img}}">
+                        <p class="mt-0 mb-0 fs-5">{{.Name}}</p>
+                    </div>
+                    <div class="mt-2">
+                        {{.DiscordName}}
+                    </div>
+                </div>
+                <div class="p-2 card-footer">
+                    <div class="column">
+                        {{range .Badges}}
+                            <span class="badge shadow-sm rounded-pill {{.Text}}">{{.Desc}}</span>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+        {{end}}
+    </div>
+{{end}}
+
+{{define "news"}}
+    {{if .News}}
+    {{else}}
+        <div class="text-center">
+            <h1>There are no news</h1>
+        </div>
+    {{end}}
 {{end}}

@@ -117,8 +117,58 @@ var randomWelcomePhrases = []string{
 	"Immerse yourself in the excitement of anime-themed gaming events. Welcome to WeebsKingdom.com! ✨🎮",
 }
 
+var teamMember = TeamMembers{
+	TeamMembers: []TeamMember{
+		{Name: "Noah Elijah Till", Img: "https://cdn.discordapp.com/avatars/377469972949237760/a_d727a6fec401fb6a2995a2b8790fef45.jpg", DiscordName: "Doktor Wu ノア#0001", Badges: []TeamBadge{
+			{Text: "text-bg-light	", Desc: "Founder"},
+			{Text: "text-bg-success", Desc: "Lead Developer"},
+		}},
+		{Name: "Kevin Riechert", Img: "https://cdn.discordapp.com/avatars/925447877331914803/8709f85cc1d8ff598b5d05508ecb4d7f.jpg", DiscordName: "Crazy_Brain #9999", Badges: []TeamBadge{
+			{Text: "text-bg-secondary", Desc: "Co-Founder"},
+			{Text: "text-bg-primary", Desc: "Testing"},
+		}},
+		{Name: "Anna Timm", Img: "https://cdn.discordapp.com/avatars/623506343839531028/9f8de2e14580a0ca0b60c98bcc11dfe5.jpg", DiscordName: "KiraYin #8792", Badges: []TeamBadge{
+			{Text: "text-bg-info", Desc: "Lead Designer"},
+		}},
+		{Name: "Hanna Bohn", Img: "https://cdn.discordapp.com/avatars/510872452654694410/ea230cccad1ec2b387eee0b5cf653c54.jpg", DiscordName: "scnrjse #2418", Badges: []TeamBadge{
+			{Text: "text-bg-primary", Desc: "Testing"},
+			{Text: "text-bg-danger", Desc: "Monsters"},
+		}},
+		{Name: "Karoline Fließ", Img: "https://cdn.discordapp.com/avatars/449914005021261834/8e3676661505da363d632090539891d8.jpg", DiscordName: "grandgoddess #4326", Badges: []TeamBadge{
+			{Text: "text-bg-primary", Desc: "Testing"},
+			{Text: "text-bg-danger", Desc: "Monsters"},
+		}},
+		{Name: "Dominic Müller", Img: "https://cdn.discordapp.com/avatars/428652975792062474/e03945810629c34fc4be09fe9735cd4d.jpg", DiscordName: "Drag0nSpark #2400", Badges: []TeamBadge{
+			{Text: "text-bg-primary", Desc: "Testing"},
+			{Text: "text-bg-danger", Desc: "Monsters"},
+		}},
+	},
+}
+
+type TeamMembers struct {
+	TeamMembers []TeamMember
+}
+
+type TeamMember struct {
+	Name        string
+	Img         string
+	DiscordName string
+	Badges      []TeamBadge
+}
+
+type TeamBadge struct {
+	Text string
+	Desc string
+}
+
+type News struct {
+	Title string
+	Body  string
+}
+
 type Index struct {
 	RandomWelcomeMessage string
+	News                 []News
 }
 
 type DefaultStruct struct {
@@ -128,9 +178,14 @@ type Profile struct {
 }
 
 var templateMap = map[string]func(c *gin.Context) any{
-	".": index,
-	"":  defaultStruct,
+	".":        index,
+	"":         defaultStruct,
+	"about/us": aboutUs,
 	// Add more entries as needed
+}
+
+func aboutUs(c *gin.Context) any {
+	return teamMember
 }
 
 func index(c *gin.Context) any {

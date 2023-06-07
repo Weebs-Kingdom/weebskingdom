@@ -1,0 +1,132 @@
+{{define "title"}}About Us{{end}}
+{{define "content"}}
+    {{template "topdoc"}}
+
+    {{template "navbar" .}}
+
+    <div class="container px-4 py-5">
+        <div class="text-center">
+            <h2 class="pb-2 border-bottom text-body-emphasis mb-5">About Us</h2>
+        </div>
+
+        <div class="d-flex flex-lg-row flex-column gap-4 py-3">
+            <div class="col d-flex flex-column align-items-start gap-4">
+                <h2 class="fw-bold text-body-emphasis">Meet Our Team</h2>
+                <p class="text-body-secondary">We are a passionate team of individuals committed to building a vibrant
+                    and inclusive community through YukiSora, our beloved Discord bot. We believe in the power of
+                    diverse voices, and we are dedicated to creating a platform where everyone feels welcome, valued,
+                    and heard.</p>
+
+                {{template "teammember" .}}
+            </div>
+
+            <div class="col">
+                <h2 class="fw-bold text-body-emphasis">Our Values and Goals</h2>
+                <ul class="list-group list-group-flush gap-3">
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">diversity_3</span> To foster a community that is welcoming and
+                        inclusive to all, regardless of background, interests, or experience.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">comment</span> To facilitate open communication and dialogue,
+                        valuing each member's input in the development and improvement of YukiSora.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">emoji_people</span> To encourage creativity and sharing, providing
+                        a platform for members to express their love for anime, manga, and gaming through art, fan
+                        fiction, and other media.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">public</span> To grow and expand our community, building
+                        connections with anime, manga, and gaming enthusiasts worldwide.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">events</span> To create engaging events that foster camaraderie,
+                        collaboration, and fun among our community members.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">verified</span> To uphold high moral and ethical standards in all
+                        our interactions, treating every member with respect and dignity.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">smart_toy</span> To continuously improve and innovate, ensuring
+                        YukiSora remains a versatile tool that enhances every user's Discord experience.
+                    </li>
+                    <li class="list-group-item d-flex align-items-center gap-2">
+                        <span class="material-icons">handshake</span> To foster transparency and trust by collaborating
+                        with our community members in all aspects of our operations.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center">
+            <h2 class="pb-2 border-bottom text-body-emphasis mt-5 mb-5">Our Crown Jewels</h2>
+        </div>
+        <div class="row gap-4 py-3">
+            <div class="col d-flex flex-column align-items-start gap-4 rounded shadow bg-body-secondary p-3">
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                    <p class="fs-1 me-3">👑</p>
+                    <h1 class="fw-bold text-body-emphasis">Weebs Kingdom</h1>
+                    <p class="fs-1 ms-3">👑</p>
+                </div>
+                <p class="text-body-secondary">Uniting anime, manga, gaming enthusiasts and more, Weebs Kingdom is a thriving hub that ignites passion for Japanese culture. Here's a glimpse into the facets that make up the Weebs Kingdom:</p>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">diversity_1</span>
+                        A melting pot of anime aficionados
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">group</span>
+                        Engrossing conversations and immersive events
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">videogame_asset</span>
+                        Thrilling gaming rounds and competitive tournaments
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">emoji_events</span>
+                        Show-stopping cosplay exhibitions and contests
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">forum</span>
+                        Showcasing creativity with art and fanfiction sharing
+                    </li>
+                </ul>
+            </div>
+            <div class="col d-flex flex-column align-items-start gap-4 rounded shadow bg-body-secondary p-3">
+                <div class="d-flex flex-row justify-content-center align-items-center">
+                    <p class="fs-1 me-3">👑</p>
+                    <h1 class="fw-bold text-body-emphasis">Yuki Sora</h1>
+                    <p class="fs-1 ms-3">👑</p>
+                </div>
+                <p class="text-body-secondary">As an evolved Discord bot, Yuki Sora is crafted to elevate server experiences, offering server admins and members an assortment of features and utilities. Here's a snapshot of what Yuki Sora brings to the table:</p>
+                <ul class="list-unstyled">
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">music_note</span>
+                        Premium quality music streaming
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">emoji_events</span>
+                        Engaging interactive games
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">security</span>
+                        Robust moderation utilities
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">settings</span>
+                        Personalized experience with customization options
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <span class="material-icons me-2 text-primary">announcement</span>
+                        Seamless announcement and event management including Twitch alerts
+                    </li>
+                </ul>
+                <a href="/yukisora" class="btn btn-primary">Discover More</a>
+            </div>
+        </div>
+    </div>
+
+    {{template "footer"}}
+    {{template "botdoc"}}
+{{end}}

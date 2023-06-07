@@ -1,4 +1,5 @@
 {{define "title"}}WeebsKingdom{{end}}
+{{define "metaDescription"}}The homepage of Weebs Kingdom. Come and Visit!{{end}}
 {{define "content"}}
     {{template "topdoc"}}
 
@@ -20,12 +21,53 @@
             <div class="lead">{{.RandomWelcomeMessage}}</div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        <iframe class="rounded" src="https://discord.com/widget?id=697531184934158476&theme=dark" width="350"
-                height="500"
-                allowtransparency="true"
-                sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    <div class="p-5 mb-5 mt-5">
+        <hr>
+    </div>
+    <div class="row w-100 mt-5 gap-3 p-5">
+        <div class="col bg-body-secondary rounded-3 shadow">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+                <p class="fs-1 me-3">👑</p>
+                <h1 class="fw-bold text-body-emphasis">News</h1>
+                <p class="fs-1 ms-3">👑</p>
+            </div>
+
+            {{template "news" .}}
+        </div>
+        <div class="col d-flex justify-content-center">
+            <iframe class="rounded" src="https://discord.com/widget?id=697531184934158476&theme=dark" width="350"
+                    height="500"
+                    allowtransparency="true"
+                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        </div>
+        <div class="col bg-body-secondary rounded-3 shadow p-3">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+                <p class="fs-1 me-3">👑</p>
+                <h1 class="fw-bold text-body-emphasis">Infos</h1>
+                <p class="fs-1 ms-3">👑</p>
+            </div>
+            <div class="text-center">
+                <ul class="list-group list-group-flush gap-3">
+                    <li class="list-group-item border-0 column rounded-3">
+                        <h5 class="col text-body-emphasis mb-3">What is this?</h5>
+                        <a class="col btn btn-secondary p-1 px-2" href="/about/us">Find out</a> who we are and what we
+                        do
+                    </li>
+                    <li class="list-group-item border-0 column rounded-3">
+                        <h5 class="col text-body-emphasis mb-3">Found an error or got a new Idea?</h5>
+                        <a class="col btn btn-secondary p-1 px-2" href="/connect">Tell us</a> and help us improve Weebs
+                        Kingdom
+                    </li>
+                    <li class="list-group-item border-0 column rounded-3">
+                        <h5 class="col text-body-emphasis mb-3">Don't have an account yet?</h5>
+                        <a class="col btn btn-secondary p-1 px-2" href="/register">Make one</a> and experience the full
+                        potential of Weebs Kingdom
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
+    {{template "footer"}}
     {{template "botdoc"}}
 {{end}}
