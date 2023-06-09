@@ -146,6 +146,8 @@ func LoadServerAssets(r *gin.Engine) {
 		return nil
 	})
 
+	r.StaticFile("/favicon.ico", "./web/static/favicon.ico")
+
 	if err != nil {
 		panic(err)
 	}

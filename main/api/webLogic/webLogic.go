@@ -119,7 +119,7 @@ var randomWelcomePhrases = []string{
 
 var teamMember = TeamMembers{
 	TeamMembers: []TeamMember{
-		{Name: "Noah Elijah Till", Img: "https://cdn.discordapp.com/avatars/377469972949237760/a_d727a6fec401fb6a2995a2b8790fef45.jpg", DiscordName: "Doktor Wu ノア#0001", Badges: []TeamBadge{
+		{Name: "Noah Elijah Till", Img: "https://cdn.discordapp.com/avatars/377469972949237760/a_d727a6fec401fb6a2995a2b8790fef45.jpg", DiscordName: "doktorwuu", Badges: []TeamBadge{
 			{Text: "text-bg-light	", Desc: "Founder"},
 			{Text: "text-bg-success", Desc: "Lead Developer"},
 		}},
