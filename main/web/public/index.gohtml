@@ -1,5 +1,5 @@
 {{define "title"}}WeebsKingdom{{end}}
-{{define "metaDescription"}}The homepage of Weebs Kingdom. Come and Visit!{{end}}
+{{define "metaDescription"}}Welcome to the vibrant world of Weebs Kingdom! Explore our homepage and immerse yourself in a community that celebrates all things anime, gaming, and more. Join us on an exciting journey filled with fun, friendship, and endless adventures. 🎉🏰{{end}}
 {{define "content"}}
     {{template "topdoc"}}
 
@@ -24,7 +24,7 @@
     <div class="p-5 mb-5 mt-5">
         <hr>
     </div>
-    <div class="row w-100 mt-5 gap-3 p-5">
+    <div class="row md-column w-100 mt-5 gap-3 p-5">
         <div class="col bg-body-secondary rounded-3 shadow">
             <div class="d-flex flex-row justify-content-center align-items-center">
                 <p class="fs-1 me-3">👑</p>
@@ -40,30 +40,72 @@
                     allowtransparency="true"
                     sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
         </div>
-        <div class="col bg-body-secondary rounded-3 shadow p-3">
+        <div class="col bg-body-secondary rounded-3 shadow p-3" style="height: 35rem; min-width: 20rem">
             <div class="d-flex flex-row justify-content-center align-items-center">
                 <p class="fs-1 me-3">👑</p>
                 <h1 class="fw-bold text-body-emphasis">Infos</h1>
                 <p class="fs-1 ms-3">👑</p>
             </div>
-            <div class="text-center">
-                <ul class="list-group list-group-flush gap-3">
-                    <li class="list-group-item border-0 column rounded-3">
-                        <h5 class="col text-body-emphasis mb-3">What is this?</h5>
-                        <a class="col btn btn-secondary p-1 px-2" href="/about/us">Find out</a> who we are and what we
-                        do
-                    </li>
-                    <li class="list-group-item border-0 column rounded-3">
-                        <h5 class="col text-body-emphasis mb-3">Found an error or got a new Idea?</h5>
-                        <a class="col btn btn-secondary p-1 px-2" href="/connect">Tell us</a> and help us improve Weebs
-                        Kingdom
-                    </li>
-                    <li class="list-group-item border-0 column rounded-3">
-                        <h5 class="col text-body-emphasis mb-3">Don't have an account yet?</h5>
-                        <a class="col btn btn-secondary p-1 px-2" href="/register">Make one</a> and experience the full
-                        potential of Weebs Kingdom
-                    </li>
-                </ul>
+            <div id="myCarousel" class="carousel slide h-75" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class=""
+                            aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+                            class=""></button>
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
+                            class="active" aria-current="true"></button>
+                </div>
+                <div class="carousel-inner h-100">
+                    <div class="carousel-item h-100 active">
+                        <svg class="bd-placeholder-img rounded" width="100%" height="100%" aria-hidden="true"
+                             preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <rect width="100%" height="100%" fill="var(--bs-tertiary-color)"></rect>
+                        </svg>
+                        <div class="carousel-caption text-start h-100">
+                            <div class="h-100 d-flex flex-column p-3 gap-4 justify-content-center align-items-center">
+                                <h1 class="text-body-emphasis text-center">🕵️ Who are you?</h1>
+                                <p class="text-center">🔍 Discover who we are and what we do</p>
+                                <a class="btn btn-primary p-2 px-3" href="/about/us">👉 About us</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item h-100">
+                        <svg class="bd-placeholder-img rounded" width="100%" height="100%" aria-hidden="true"
+                             preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <rect width="100%" height="100%" fill="var(--bs-tertiary-color)"></rect>
+                        </svg>
+                        <div class="carousel-caption text-start h-100">
+                            <div class="h-100 d-flex flex-column p-3 gap-4 justify-content-center align-items-center">
+                                <h1 class="text-body-emphasis text-center">🐞 Found an error or got a new idea?</h1>
+                                <p class="text-center">🤔 Tell us and help us improve Weebs Kingdom</p>
+                                <a class="btn btn-primary p-2 px-3" href="/contact  ">💬 Tell us</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item h-100">
+                        <svg class="bd-placeholder-img rounded" width="100%" height="100%"
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <rect width="100%" height="100%" fill="var(--bs-tertiary-color)"></rect>
+                        </svg>
+                        <div class="carousel-caption text-start h-100">
+                            <div class="h-100 d-flex flex-column p-3 gap-4 justify-content-center align-items-center">
+                                <h1 class="text-body-emphasis text-center">🔐 Don't have an account yet?</h1>
+                                <p class="text-center">🔥 Create an account now and experience the full potential of
+                                    Weebs Kingdom</p>
+                                <a class="btn btn-primary p-2 px-3" href="/register">👉 Create Account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
     </div>

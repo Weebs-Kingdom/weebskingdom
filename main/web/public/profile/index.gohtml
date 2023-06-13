@@ -1,4 +1,5 @@
 {{define "title"}}Profile{{end}}
+{{define "metaDescription"}}Manage your profile settings and personalize your Weebs Kingdom experience. Update your information, preferences, and customize your profile to reflect your unique identity. 🖌️✨{{end}}
 {{define "featureDisabledDescription"}}User and Profile{{end}}
 {{define "content"}}
     {{template "topdoc"}}
@@ -11,7 +12,7 @@
         {{if .User.IsVerifiedDiscord}}
             <div class="d-flex flex-column justify-content-center align-items-center">
                 <div style="width: fit-content" class="mt-5 shadow rounded py-3 px-5 text-center">
-                    <div class="bs-light-text-emphasis">Welcome {{.User.username}}!
+                    <div class="bs-light-text-emphasis">Welcome {{.User.Username}}!
                     </div>
                 </div>
             </div>

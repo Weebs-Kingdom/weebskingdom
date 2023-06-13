@@ -8,7 +8,7 @@ let main = new Vue({
         this.initApp();
         // check if content loaded and show another button
         setTimeout(() => {
-            if(!this.loaded) {
+            if (!this.loaded) {
                 this.late = true;
             }
         }, 1000 * 5)

@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"strings"
+	"time"
 	"weebskingdom/api/middleware"
 	"weebskingdom/crypt"
 	"weebskingdom/database"
@@ -16,11 +17,16 @@ import (
 func InitApi(r *gin.Engine) {
 	apiAuth := r.Group("/api/dev")
 
-	userAuth := apiAuth.Group("/api/user")
+	userAuth := r.Group("/api/user")
 	userAuth.Use(middleware.LoginToken())
+
+	adminAuth := r.Group("/api/admin")
+	adminAuth.Use(middleware.LoginToken())
+	adminAuth.Use(middleware.VerifyAdmin())
 
 	initApis(apiAuth)
 	initUserApi(userAuth)
+	initAdminApi(adminAuth)
 }
 
 func initUserApi(r *gin.RouterGroup) {
@@ -31,10 +37,62 @@ func initUserApi(r *gin.RouterGroup) {
 	})
 }
 
+func initAdminApi(r *gin.RouterGroup) {
+	r.GET("/auth", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Logged in",
+		})
+	})
+
+	r.DELETE("/contact", func(c *gin.Context) {
+		type Contact struct {
+			ID string `json:"contactID"`
+		}
+
+		var contact Contact
+		err := c.ShouldBindBodyWith(&contact, binding.JSON)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"message": "Invalid JSON",
+			})
+			return
+		}
+
+		dataId, err := primitive.ObjectIDFromHex(contact.ID)
+
+		if err != nil {
+			c.JSON(400, gin.H{
+				"message": "Invalid ID",
+			})
+			return
+		}
+
+		_, err = database.MongoDB.Collection("contact").DeleteOne(c, bson.M{
+			"_id": dataId,
+		})
+		if err != nil {
+			c.JSON(403, gin.H{
+				"message": "This contact doesn't exist",
+			})
+			return
+		}
+		c.JSON(200, gin.H{
+			"message": "Deleted contact",
+		})
+	})
+}
+
 func initApis(r *gin.RouterGroup) {
 	type Register struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
+	}
+
+	type ContactForm struct {
+		Email   string `json:"email"`
+		Subject string `json:"subject"`
+		Message string `json:"message"`
+		Topic   string `json:"topic"`
 	}
 
 	r.POST("/register", func(c *gin.Context) {
@@ -195,5 +253,52 @@ func initApis(r *gin.RouterGroup) {
 				})
 			}
 		}
+	})
+
+	r.POST("/contact", func(c *gin.Context) {
+		var contact ContactForm
+		err := c.ShouldBindBodyWith(&contact, binding.JSON)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"message": "Invalid JSON",
+			})
+			return
+		}
+
+		//get user
+		c.Set("ignoreAuth", true)
+		middleware.LoginToken()(c)
+		c.Set("ignoreAuth", false)
+
+		isLoggedIn := c.GetBool("loggedIn")
+		var userId = primitive.NilObjectID
+		if isLoggedIn {
+			dUser, ok := c.Get("user")
+			if ok {
+				user := dUser.(models.User)
+				userId = user.ID
+			}
+		}
+
+		_, err = database.MongoDB.Collection("contact").InsertOne(c, models.Contact{
+			ID:         primitive.NewObjectID(),
+			User:       userId,
+			Message:    contact.Message,
+			Email:      contact.Email,
+			Subject:    contact.Subject,
+			Topic:      contact.Topic,
+			DateIssued: primitive.NewDateTimeFromTime(time.Now()),
+		})
+		if err != nil {
+			c.JSON(500, gin.H{
+				"message": "Internal Server Error",
+			})
+			return
+		}
+		c.JSON(200, gin.H{
+			"message": "Contact sent",
+			"status":  200,
+		})
+
 	})
 }

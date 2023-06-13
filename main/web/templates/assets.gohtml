@@ -19,9 +19,12 @@
                 <div class="col">
                     <h5>Legal</h5>
                     <ul class="nav justify-content-center border-bottom pb-3 mb-3d">
-                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/bot-terms">Yuki Sora Terms of Service</a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/website-terms">Weebs Kingdom Terms and Conditions</a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/privacy-policy">Privacy Policy</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/bot-terms">Yuki Sora
+                                Terms of Service</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/website-terms">Weebs
+                                Kingdom Terms and Conditions</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/privacy-policy">Privacy
+                                Policy</a></li>
                         <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/dsgvo">DSGVO</a></li>
                     </ul>
                 </div>
@@ -29,8 +32,10 @@
                     <h5>Useful Links</h5>
                     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
                         <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/faq">FAQ</a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/contact">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/about/us">About Us</a></li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/contact">Contact Us</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link px-2 text-body-secondary" href="/about/us">About Us</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -68,11 +73,23 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
+                    {{if .LoggedIn}}
+                        {{if .User.IsAdmin}}
+                            <li class="nav-item dropdown selectable">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                   aria-expanded="false">Admin</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/admin/contact">Contact Request</a></li>
+                                </ul>
+                            </li>
+                        {{end}}
+                    {{end}}
                     <li class="nav-item dropdown selectable">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Weebs
                             Kingdom</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/about/us">About Us</a></li>
+                            <li><a class="dropdown-item" href="/faq">FAQ</a></li>
                             <li><a class="dropdown-item" href="/about/member">Our Member</a></li>
                             <li><a class="dropdown-item" href="/about/support">Our Supporter</a></li>
                             <li><a class="dropdown-item" href="/about/streamer">Our Streamer</a></li>
@@ -85,6 +102,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/yukisora">About Yuki</a></li>
                             <li><a class="dropdown-item" href="/change">Change Log</a></li>
+                            <li><a class="dropdown-item" href="/opensource">Open Source</a></li>
                             <li><a class="dropdown-item" href="/partner">Partner Program</a></li>
                         </ul>
                     </li>
@@ -113,10 +131,6 @@
             </div>
         </div>
     </nav>
-    <script>
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    </script>
 {{end}}
 
 {{define "btndarkmode"}}
@@ -213,4 +227,121 @@
             <h1>There are no news</h1>
         </div>
     {{end}}
+{{end}}
+
+{{define "contactForm"}}
+    <div id="contact" class="container">
+        <h1 class="text-center text-body-emphasis mb-5">{{if .Bug}}Bug report{{else if .Partner}}Partnership{{else if .Feature}}Feature request{{else if .General}}General{{end}}</h1>
+        {{if not .LoggedIn}}
+            <div class="bg-body-secondary rounded-3 shadow p-4 mb-5">
+                <div class="container mb-5">
+                    <h3 class="text-center">You're not logged in!</h3>
+                    <p class="text-center mb-4">Since your not logged in, we ask you kindly to submit your E-Mail, so we
+                        can
+                        contact you, if we have questions about your submission.</p>
+                    <div class="d-flex flex-row justify-content-center align-items-center gap-2"><p class="m-0">You
+                            actually have an account?</p>
+                        <a class="btn btn-primary" href="/login">Login</a></div>
+                </div>
+                <div class="form-floating mt-5">
+                    <input v-model="email" type="email" class="form-control" id="emailInput"
+                           placeholder="name@example.com" aria-describedby="emailHelp">
+                    <label for="emailInput">Email address</label>
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                </div>
+            </div>
+        {{else}}
+            <div class="bg-body-secondary rounded-3 shadow p-4 mb-5">
+                <div class="container mb-0">
+                    <h3 class="text-center">You're logged in!</h3>
+                    <p class="text-center mb-4">Since your logged in, we don't need any additional information from you!</p>
+                </div>
+            </div>
+        {{end}}
+        <div class="form-floating mb-3">
+            <input v-model="subject" type="text" class="form-control" id="subjectInput" placeholder="Subject">
+            <label for="subjectInput">Subject</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea v-model="message" class="form-control h-50" id="messageInput"
+                      placeholder="Message ..."></textarea>
+            <label for="messageInput">Message</label>
+        </div>
+        <div class="mb-3 d-flex justify-content-center">
+            <button @click="submit()" class="btn btn-primary align-center">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        var main = new Vue({
+            el: '#contact',
+            data: {
+                email: '',
+                subject: '',
+                message: '',
+                emailRequired: {{if not .LoggedIn}}true{{else}}false{{end}}
+            },
+            methods: {
+                submit: function () {
+                    if (this.subject === '' || this.message === '' || (this.emailRequired && this.email === '')) {
+                        // Make field red
+                        if (this.subject === '') {
+                            document.getElementById('subjectInput').classList.add('is-invalid')
+                        } else {
+                            document.getElementById('subjectInput').classList.remove('is-invalid')
+                        }
+                        if (this.message === '') {
+                            document.getElementById('messageInput').classList.add('is-invalid')
+                        } else {
+                            document.getElementById('messageInput').classList.remove('is-invalid')
+                        }
+                        if (this.emailRequired && this.email === '') {
+                            document.getElementById('emailInput').classList.add('is-invalid')
+                        } else {
+                            document.getElementById('emailInput').classList.remove('is-invalid')
+                        }
+                        alert('Please fill out all fields')
+                        return
+                    }
+
+                    fetch('/api/dev/contact', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: this.email,
+                            subject: this.subject,
+                            message: this.message,
+                            topic: {{if .Bug}}'bug'
+                            {{else if .Partner}}'partner'{{else if .Feature}}'feature'
+                            {{else if .General}}'general'{{end}}
+                        })
+                    }).then(res => {
+                        if (res.status === 200) {
+                            alert('Your message has been sent')
+                            this.email = ''
+                            this.subject = ''
+                            this.message = ''
+                            document.location.replace("/contact")
+                        } else {
+                            alert('An error occurred')
+                        }
+                    })
+                }
+            }
+        });
+    </script>
+{{end}}
+
+{{define "otherConditions"}}
+    <div class="px-4 mb-1 py-3 my-5 d-flex flex-column justify-content-center align-items-center">
+        <h1>Other important conditions</h1>
+        <ul>
+            <li><a href="/dsgvo">DSGVO (German privacy policy)</a></li>
+            <li><a href="/privacy-policy">Privacy Policy</a></li>
+            <li><a href="/website-terms">Website Terms and Conditions</a></li>
+            <li><a href="/bot-terms">YukiSora (Discord Bot) Terms of service</a></li>
+        </ul>
+    </div>
 {{end}}

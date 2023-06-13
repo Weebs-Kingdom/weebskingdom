@@ -1,10 +1,106 @@
 {{define "title"}}Contact{{end}}
+{{define "metaDescription"}}Reach out to us for any inquiries, bug reports, feature requests, or partnership opportunities. We value your feedback and are here to assist you. Connect with us and be a part of the Weebs Kingdom community. Let's create something amazing together! 📩✨{{end}}
 {{define "content"}}
     {{template "topdoc"}}
 
     {{template "navbar" .}}
+    {{if .Contact}}
+        <div class="container py-3">
+            <div class="text-center">
+                <h2 class="pb-2 border-bottom text-body-emphasis">What do you want to tell us?</h2>
+            </div>
+            <div class="d-flex justify-content-center flex-lg-row flex-column gap-4 align-items-stretch mt-5">
+                <div class="card mb-4 rounded-3 flex-grow">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Report Bug</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>🐞 Found a bug? Let us know!</li>
+                            <li>🤔 Experiencing unexpected behavior?</li>
+                            <li>🕵️ Notice any suspicious activity?</li>
+                            <li>🔍 Have a question or need assistance?</li>
+                        </ul>
 
-    {{template "underConstruction"}}
+                    </div>
+                    <div class="p-3"><a href="?bug" class="w-100 btn btn-lg btn-primary">Contact now</a></div>
+                </div>
+                <div class="card mb-4 rounded-3 flex-grow">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Feature Request</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>✨ Have a bright idea for a new feature?</li>
+                            <li>🚀 Want to contribute to Yuki's development?</li>
+                            <li>💡 Need a specific functionality for your guild?</li>
+                            <li>🗣️ Share your feedback or suggestion with us!</li>
+                        </ul>
+                    </div>
+                    <div class="p-3"><a href="?feature" class="w-100 btn btn-lg btn-primary">Get started</a></div>
+                </div>
+                <div class="card mb-4 rounded-3 flex-grow">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Partnership Program</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>🤝 Interested in joining our vibrant community?</li>
+                            <li>👥 Want to collaborate with Yuki-Sora on your guild?</li>
+                            <li>🌟 Seeking opportunities to grow together?</li>
+                            <li>📩 Reach out to us and let's create something amazing!</li>
+                        </ul>
+                    </div>
+                    <div class="p-3"><a href="?partnership" class="w-100 btn btn-lg btn-primary">Contact us</a></div>
+                </div>
+            </div>
+            <div class="card mt-5 rounded-3">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal text-center">Nothing matches your request?</h4>
+                </div>
+                <div class="card-body text-center">
+                    <ul class="list-unstyled mt-2 mb-2">
+                        <li>ℹ️ Looking for general information?</li>
+                        <li>📚 Want to learn more about our community?</li>
+                        <li>📢 Have any inquiries or non-specific questions?</li>
+                        <li>💌 Need assistance or have any concerns?</li>
+                    </ul>
+                </div>
+                <div class="p-3">
+                    <a href="?general" class="w-100 btn btn-lg btn-primary">Contact us</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 mt-5">
+            <hr>
+        </div>
+        <style>
+            .card:hover {
+                box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.2);
+                transform: scale(1.05);
+                transition: box-shadow 0.3s, transform 0.3s;
+            }
+
+            .card {
+                box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.2);
+                transition: all ease 0.3s;
+            }
+
+            .card:hover .card-header {
+                color: #fff !important;
+                background-color: rgba(13, 110, 253, var(--bs-bg-opacity, 1)) !important;
+            }
+        </style>
+    {{else if .Bug }}
+        {{template "contactForm" .}}
+    {{else if .Feature }}
+        {{template "contactForm" .}}
+    {{else if .Partner }}
+        {{template "contactForm" .}}
+    {{else if .General }}
+        {{template "contactForm" .}}
+    {{end}}
 
     {{template "footer"}}
     {{template "botdoc"}}

@@ -10,7 +10,6 @@ import (
 
 func GetLogicData(c *gin.Context, path string) interface{} {
 	//check if path exists in templateMap
-	c.Set("ignoreAuth", true)
 
 	var data interface{} = nil
 	if _, ok := templateMap[path]; ok {
@@ -29,7 +28,9 @@ func GetLogicData(c *gin.Context, path string) interface{} {
 		dat[field.Name] = value
 	}
 
+	c.Set("ignoreAuth", true)
 	loggedIn := isLoggedIn(c)
+	c.Set("ignoreAuth", false)
 	dat["LoggedIn"] = loggedIn
 	if loggedIn {
 		data, exists := c.Get("user")
@@ -171,17 +172,18 @@ type Index struct {
 	News                 []News
 }
 
-type DefaultStruct struct {
-}
-
 type Profile struct {
 }
 
-var templateMap = map[string]func(c *gin.Context) any{
-	".":        index,
-	"":         defaultStruct,
-	"about/us": aboutUs,
-	// Add more entries as needed
+type Contact struct {
+	Bug     bool
+	Feature bool
+	Partner bool
+	General bool
+	Contact bool
+}
+
+type DefaultStruct struct {
 }
 
 func aboutUs(c *gin.Context) any {
@@ -194,6 +196,54 @@ func index(c *gin.Context) any {
 
 	return Index{
 		RandomWelcomeMessage: randomWelcomePhrase,
+	}
+}
+
+func contact(c *gin.Context) any {
+	if _, ok := c.GetQuery("bug"); ok {
+		return Contact{
+			Bug:     true,
+			Feature: false,
+			Partner: false,
+			Contact: false,
+			General: false,
+		}
+	}
+	if _, ok := c.GetQuery("feature"); ok {
+		return Contact{
+			Feature: true,
+			Bug:     false,
+			Partner: false,
+			Contact: false,
+			General: false,
+		}
+	}
+	if _, ok := c.GetQuery("partnership"); ok {
+		return Contact{
+			Partner: true,
+			Bug:     false,
+			Feature: false,
+			Contact: false,
+			General: false,
+		}
+	}
+
+	if _, ok := c.GetQuery("general"); ok {
+		return Contact{
+			General: true,
+			Bug:     false,
+			Feature: false,
+			Partner: false,
+			Contact: false,
+		}
+	}
+
+	return Contact{
+		Contact: true,
+		Bug:     false,
+		Feature: false,
+		Partner: false,
+		General: false,
 	}
 }
 

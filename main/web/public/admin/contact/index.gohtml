@@ -1,0 +1,78 @@
+{{define "title"}}Admin - Contact{{end}}
+{{define "metaDescription"}}Manage and oversee contacts with our dedicated admin team. Gain access to powerful tools and features to edit and view contact information. Streamline your administrative tasks and ensure effective communication. Reach out to our admin team for any inquiries or assistance. Together, let's make your experience seamless and enjoyable! 📞👥{{end}}
+{{define "content"}}
+    {{template "topdoc"}}
+
+    {{template "navbar" .}}
+
+    <div class="container" id="admin">
+        {{if .Contacts}}
+            <h1 class="text-center mb-5">Contacts</h1>
+        {{else}}
+            <h1 class="text-center">No Contacts</h1>
+        {{end}}
+        <div class="d-flex justify-content-center align-items-center flex-column gap-4">
+            {{range .Contacts}}
+                <div class="w-75 column bg-body-secondary rounded-3 shadow p-3">
+                    <h1>{{.Topic}}</h1>
+                    <h3>{{.Subject}}</h3>
+                    <xmp class="p-2 rounded bg-body-tertiary"
+                         style="white-space:pre-wrap; word-wrap:break-word;">{{.Message}}</xmp>
+                    <p>{{.DateIssued}}</p>
+                    {{.ContactID}}
+                    {{if .FoundUser}}
+                        <div class="bg-body-tertiary rounded-3 shadow p-3">
+                            <h5>User</h5>
+                            <div class="row">
+                                <div class="col column">
+                                    <p>Name: </p>
+                                    <p>{{.User.Username}}</p>
+                                </div>
+                                <div class="col column">
+                                    <p>E-Mail: </p>
+                                    <p>{{.User.Email}}</p>
+                                </div>
+                                <div class="col column">
+                                    <p>Discord ID: </p>
+                                    <p>{{.User.DiscordID}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{else}}
+                        <p>From: ({{.Email}})</p>
+                    {{end}}
+                    <button class="btn btn-danger mb-3 mt-4" @click="deleteContact('{{.ContactID}}')">Delete</button>
+                </div>
+            {{end}}
+        </div>
+    </div>
+
+    <script>
+        var main = new Vue({
+            el: '#admin',
+            data: {},
+            methods: {
+                deleteContact: function (id) {
+                    //ask if the user really wants to delete the contact
+                    if (!confirm("Are you sure you want to delete this contact?")) {
+                        return
+                    }
+
+                    fetch('/api/admin/contact', {
+                        method: 'DELETE',
+                        body: JSON.stringify({
+                            contactID: id
+                        })
+                    }).then(function (response) {
+                        if (response.status === 200) {
+                            document.location.reload()
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+
+    {{template "footer"}}
+    {{template "botdoc"}}
+{{end}}

@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+	"weebskingdom/api/middleware"
 	"weebskingdom/api/webLogic"
 )
 
@@ -45,6 +46,12 @@ func LoadTemplates(r *gin.Engine) {
 	}
 
 	fmt.Println("\n\nLoading sites...")
+	adminGroup := r.Group("/admin")
+	adminGroup.Use(middleware.LoginToken())
+	adminGroup.Use(middleware.VerifyAdmin())
+	devGroup := r.Group("/dev")
+	devGroup.Use(middleware.LoginToken())
+	devGroup.Use(middleware.VerifyDeveloper())
 
 	// Walk through the "public" folder and all its subdirectories
 	err := filepath.Walk("web/public", func(path string, info os.FileInfo, err error) error {
@@ -71,12 +78,20 @@ func LoadTemplates(r *gin.Engine) {
 			parsing = append(parsing, templateFiles...)
 			parsing = append(parsing, path)
 
-			fmt.Println("Serving " + relPath + " at /" + templateName)
-
 			tmpl[templateName] = template.Must(template.ParseFiles(parsing...))
 
-			// Register the templates with the appropriate route
-			r.GET("/"+templateName, handler)
+			if strings.HasPrefix(templateName, "admin") {
+				fmt.Println("Serving " + relPath + " as admin at /" + templateName)
+				themPath := strings.Replace(templateName, "admin", "", 1)
+				adminGroup.GET("/"+themPath, handler)
+			} else if strings.HasPrefix(templateName, "dev") {
+				fmt.Println("Serving " + relPath + " as dev at /" + templateName)
+				themPath := strings.Replace(templateName, "dev", "", 1)
+				devGroup.GET("/"+themPath, handler)
+			} else {
+				fmt.Println("Serving " + relPath + " at /" + templateName)
+				r.GET("/"+templateName, handler)
+			}
 		}
 
 		return nil

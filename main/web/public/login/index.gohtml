@@ -1,4 +1,5 @@
 {{define "title"}}Login{{end}}
+{{define "metaDescription"}}Access your Weebs Kingdom account and enjoy all the features and benefits. Log in now to join the community and unleash the full potential of Weebs Kingdom! 🔐🔓{{end}}
 {{define "featureDisabledDescription"}}Login and Registation{{end}}
 {{define "content"}}
     {{template "topdoc"}}
@@ -10,12 +11,14 @@
     {{if not .LoggedIn}}
         <div id="login" class="container">
             <div class="form-floating mb-3">
-                <input v-model="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" aria-describedby="emailHelp">
+                <input v-model="email" type="email" class="form-control" id="floatingInput"
+                       placeholder="name@example.com" aria-describedby="emailHelp">
                 <label for="floatingInput">Email address</label>
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3 form-floating">
-                <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input v-model="password" type="password" class="form-control" id="floatingPassword"
+                       placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
             <div class="mb-3 d-flex justify-content-center">
