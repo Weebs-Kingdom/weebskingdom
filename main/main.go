@@ -29,5 +29,6 @@ func main() {
 	if os.Getenv("ADDRESS") != "" {
 		address = os.Getenv("ADDRESS")
 	}
+
 	r.Run(address)
 }
