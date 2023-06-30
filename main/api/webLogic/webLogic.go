@@ -124,22 +124,22 @@ var teamMember = TeamMembers{
 			{Text: "text-bg-light	", Desc: "Founder"},
 			{Text: "text-bg-success", Desc: "Lead Developer"},
 		}},
-		{Name: "Kevin Riechert", Img: "https://cdn.discordapp.com/avatars/925447877331914803/8709f85cc1d8ff598b5d05508ecb4d7f.jpg", DiscordName: "Crazy_Brain #9999", Badges: []TeamBadge{
+		{Name: "Kevin Riechert", Img: "https://cdn.discordapp.com/avatars/925447877331914803/8709f85cc1d8ff598b5d05508ecb4d7f.jpg", DiscordName: "crazy_brain", Badges: []TeamBadge{
 			{Text: "text-bg-secondary", Desc: "Co-Founder"},
 			{Text: "text-bg-primary", Desc: "Testing"},
 		}},
-		{Name: "Anna Timm", Img: "https://cdn.discordapp.com/avatars/623506343839531028/9f8de2e14580a0ca0b60c98bcc11dfe5.jpg", DiscordName: "KiraYin #8792", Badges: []TeamBadge{
+		{Name: "Anna Timm", Img: "https://cdn.discordapp.com/avatars/623506343839531028/9f8de2e14580a0ca0b60c98bcc11dfe5.jpg", DiscordName: "kiraayin", Badges: []TeamBadge{
 			{Text: "text-bg-info", Desc: "Lead Designer"},
 		}},
-		{Name: "Hanna Bohn", Img: "https://cdn.discordapp.com/avatars/510872452654694410/ea230cccad1ec2b387eee0b5cf653c54.jpg", DiscordName: "scnrjse #2418", Badges: []TeamBadge{
+		{Name: "Hanna Bohn", Img: "https://cdn.discordapp.com/avatars/510872452654694410/ea230cccad1ec2b387eee0b5cf653c54.jpg", DiscordName: "scnrjse", Badges: []TeamBadge{
 			{Text: "text-bg-primary", Desc: "Testing"},
 			{Text: "text-bg-danger", Desc: "Monsters"},
 		}},
-		{Name: "Karoline Fließ", Img: "https://cdn.discordapp.com/avatars/449914005021261834/8e3676661505da363d632090539891d8.jpg", DiscordName: "grandgoddess #4326", Badges: []TeamBadge{
+		{Name: "Karoline Fließ", Img: "https://cdn.discordapp.com/avatars/449914005021261834/8e3676661505da363d632090539891d8.jpg", DiscordName: "grandgoddess", Badges: []TeamBadge{
 			{Text: "text-bg-primary", Desc: "Testing"},
 			{Text: "text-bg-danger", Desc: "Monsters"},
 		}},
-		{Name: "Dominic Müller", Img: "https://cdn.discordapp.com/avatars/428652975792062474/e03945810629c34fc4be09fe9735cd4d.jpg", DiscordName: "Drag0nSpark #2400", Badges: []TeamBadge{
+		{Name: "Dominic Müller", Img: "https://cdn.discordapp.com/avatars/428652975792062474/e03945810629c34fc4be09fe9735cd4d.jpg", DiscordName: "drag0nspark", Badges: []TeamBadge{
 			{Text: "text-bg-primary", Desc: "Testing"},
 			{Text: "text-bg-danger", Desc: "Monsters"},
 		}},
