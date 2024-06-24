@@ -2,7 +2,7 @@ FROM golang AS builder
 WORKDIR /source
 RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/Weebs-Kingdom/weebskingdom
-WORKDIR ./weebkingdom
+WORKDIR ./weebkingdom/main
 RUN go mod download
 RUN go build -o /app/weebskingdom
 
