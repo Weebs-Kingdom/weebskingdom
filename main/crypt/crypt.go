@@ -5,58 +5,86 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"log"
+	"os"
 	"time"
 )
 
-func rsaConfigSetup() *rsa.PrivateKey {
-	priv, err := ioutil.ReadFile("private.pem")
-	if err != nil {
-		log.Print("No RSA private key found, generating temp one")
-		return generatePrivateKey(4096)
-	}
+const rsaKeyName = "rsa_private_key.pem"
 
-	privPem, _ := pem.Decode(priv)
-	var privPemBytes []byte
-	if privPem.Type != "RSA PRIVATE KEY" {
-		log.Printf("RSA private key is of the wrong type :%s", privPem.Type)
-	}
-	privPemBytes = privPem.Bytes
+var rsaKey *rsa.PrivateKey = nil
 
-	var parsedKey interface{}
-	if parsedKey, err = x509.ParsePKCS1PrivateKey(privPemBytes); err != nil {
-		if parsedKey, err = x509.ParsePKCS8PrivateKey(privPemBytes); err != nil { // note this returns type `interface{}`
-			log.Printf("Unable to parse RSA private key, generating a temp one :%s", err.Error())
-			return generatePrivateKey(4096)
+func getRsaKeyPath() string {
+	rsaKeyPath := rsaKeyName
+	return rsaKeyPath
+}
+
+func KeySetup() error {
+	rsaKeyPath := getRsaKeyPath()
+	// Check if the RSA private key already exists on the file system.
+	if _, err := os.Stat(rsaKeyPath); !os.IsNotExist(err) {
+		// If it exists, load and return the existing key.
+		rsky, err := loadRS256Key()
+		if err != nil {
+			return err
 		}
+
+		log.Println("RSA key loaded successfully")
+		rsaKey = rsky
+		return nil
 	}
 
-	var privateKey *rsa.PrivateKey
-	var ok bool
-	privateKey, ok = parsedKey.(*rsa.PrivateKey)
-	if !ok {
-		log.Printf("Unable to parse RSA private key, generating a temp one : %s", err.Error())
-		return generatePrivateKey(4096)
+	// If the key doesn't exist, generate a new one.
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		return err
 	}
-	return privateKey
+
+	// Encode the private key to PEM format.
+	privateKeyPEM := &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
+	}
+
+	// Save the private key to the file system.
+	err = os.WriteFile(rsaKeyPath, pem.EncodeToMemory(privateKeyPEM), 0600)
+	if err != nil {
+		return err
+	}
+
+	rsaKey = privateKey
+
+	log.Println("RSA key generated successfully")
+	return nil
 }
 
-// generatePrivateKey returns a new RSA key of bits length
-func generatePrivateKey(bits int) *rsa.PrivateKey {
-	key, err := rsa.GenerateKey(rand.Reader, bits)
-	log.Printf("Failed to generate signing key :%s", err.Error())
-	return key
-}
+func loadRS256Key() (*rsa.PrivateKey, error) {
+	rsaKeyPath := getRsaKeyPath()
+	// Read the private key from the file system.
+	keyBytes, err := ioutil.ReadFile(rsaKeyPath)
+	if err != nil {
+		return nil, err
+	}
 
-var privateKey *rsa.PrivateKey
+	// Parse the PEM encoded private key.
+	block, _ := pem.Decode(keyBytes)
+	if block == nil || block.Type != "RSA PRIVATE KEY" {
+		return nil, errors.New("invalid private key")
+	}
 
-func InitJwt() {
-	privateKey = rsaConfigSetup()
+	// Parse the RSA private key.
+	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+		return nil, err
+	}
+
+	return privateKey, nil
 }
 
 func GenerateLoginToken(userId primitive.ObjectID) (string, error) {
@@ -68,7 +96,7 @@ func GenerateLoginToken(userId primitive.ObjectID) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, mapp)
-	tokenString, err := token.SignedString(privateKey)
+	tokenString, err := token.SignedString(rsaKey)
 	if err != nil {
 		log.Printf("Failed to generate JWT :%s", err.Error())
 		return "", err
@@ -89,7 +117,7 @@ func ParseJwt(tokenString string) (jwt.MapClaims, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
-		return privateKey.Public(), nil
+		return rsaKey.Public(), nil
 	})
 	if err != nil {
 		log.Printf("Failed to parse JWT :%s", err.Error())
@@ -104,7 +132,7 @@ func ParseJwt(tokenString string) (jwt.MapClaims, error) {
 }
 
 func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	stringByte := string(bytes)
 	return stringByte, err
 }

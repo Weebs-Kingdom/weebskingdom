@@ -17,7 +17,7 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	crypt.InitJwt()
+	crypt.KeySetup()
 	database.InitDatabase()
 
 	api.InitApi(r)
