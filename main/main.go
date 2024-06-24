@@ -30,6 +30,9 @@ func main() {
 		log.Println("No .env file found")
 	}
 
+	//Banner
+	log.Println("\n" + env.BANNER + "\nWeebs Kingdom website" + "\nVersion: " + env.VERSION)
+
 	crypt.KeySetup()
 	database.InitDatabase()
 
