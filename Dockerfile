@@ -1,6 +1,6 @@
 FROM golang AS builder
 WORKDIR /source
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl unzip
 ADD "https://api.github.com/repos/Weebs-Kingdom/weebskingdom/commits?per_page=1" latest_commit
 RUN curl -sL "https://github.com/Weebs-Kingdom/weebskingdom/archive/main.zip" -o weebskingdom.zip && unzip weebskingdom.zip
 WORKDIR ./weebskingdom-main/main
