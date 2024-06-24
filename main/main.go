@@ -25,10 +25,10 @@ func main() {
 	core.LoadServerAssets(r)
 
 	//set address
-	address := ""
-	if os.Getenv("ADDRESS") != "" {
-		address = os.Getenv("ADDRESS")
+	port := "8080"
+	if os.Getenv("PORT") != "" {
+		port = os.Getenv("PORT")
 	}
 
-	r.Run(address)
+	r.Run(":" + port)
 }
