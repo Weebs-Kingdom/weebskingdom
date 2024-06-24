@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
@@ -9,9 +10,21 @@ import (
 	"weebskingdom/core"
 	"weebskingdom/crypt"
 	"weebskingdom/database"
+	"weebskingdom/env"
 )
 
+//go:embed web
+var Files embed.FS
+
 func main() {
+	_, err := Files.ReadDir("web")
+	if err != nil {
+		log.Println("Failed to read public files - this is likely a problem during compilation. Exiting...")
+		return
+	}
+
+	env.Files = Files
+
 	r := gin.Default()
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")

@@ -1,15 +1,16 @@
 package core
 
 import (
-	"fmt"
+	"embed"
 	"github.com/gin-gonic/gin"
+	"io/fs"
+	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 	"text/template"
-	"weebskingdom/api/middleware"
 	"weebskingdom/api/webLogic"
+	"weebskingdom/env"
 )
 
 var tmpl = map[string]*template.Template{}
@@ -20,23 +21,30 @@ func LoadTemplates(r *gin.Engine) {
 	// Load templates files
 	templateFiles := []string{}
 
-	fmt.Println("Loading templates...")
-	// Walk through the "templates" folder and all its subdirectories
-	nerr := filepath.Walk("web/templates", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+	// Check if base template exists
+	_, err := fs.ReadFile(env.Files, "web/templates/base.gohtml")
+	if err != nil {
+		panic("Base template not found, ensure it exists in web/templates/base.gohtml")
+	}
 
+	templateFiles = append(templateFiles, "web/templates/base.gohtml")
+
+	log.Println("Loading templates...")
+	// Walk through the "templates" folder and all its subdirectories
+	nerr := WalkFS(env.Files, "web/templates", func(path string, name string, isDir bool) error {
 		// Check if the file is an HTML templates
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".gohtml") {
+		if !isDir && strings.HasSuffix(name, ".gohtml") {
+			if strings.HasSuffix(path, "base.gohtml") {
+				return nil
+			}
 			// Replace backslashes with forward slashes (for Windows compatibility)
 			templateName := strings.Replace(path, "\\", "/", -1)
 
 			// Parse the file and add it to the "tmpl" map
 			templateFiles = append(templateFiles, path)
 
-			//console log
-			fmt.Print(templateName + " ")
+			//console logChopper
+			log.Println(templateName + " ")
 		}
 		return nil
 	})
@@ -45,29 +53,29 @@ func LoadTemplates(r *gin.Engine) {
 		panic(nerr)
 	}
 
-	fmt.Println("\n\nLoading sites...")
-	adminGroup := r.Group("/admin")
-	adminGroup.Use(middleware.LoginToken())
-	adminGroup.Use(middleware.VerifyAdmin())
-	devGroup := r.Group("/dev")
-	devGroup.Use(middleware.LoginToken())
-	devGroup.Use(middleware.VerifyDeveloper())
+	log.Println("\n\nLoading sites...")
 
 	// Walk through the "public" folder and all its subdirectories
-	err := filepath.Walk("web/public", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		// Check if the file is an HTML template
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".gohtml") {
+	err = WalkFS(env.Files, "web/public", func(path string, name string, isDir bool) error {
+		// Check if the file is an HTML templates
+		if !isDir && strings.HasSuffix(name, ".gohtml") {
 			// Get the directory path (relative to the "public" folder)
-			relPath, err := filepath.Rel("web/public", filepath.Dir(path))
+			relPath, err := RelFS("web/public", path)
 			if err != nil {
 				return err
 			}
 			// Replace backslashes with forward slashes (for Windows compatibility)
 			templateName := strings.Replace(relPath, "\\", "/", -1)
+
+			//Cut first / from path
+			if strings.HasPrefix(templateName, "/") {
+				templateName = strings.Replace(templateName, "/", "", 1)
+			}
+
+			//cut index.gohtml to index
+			if strings.HasSuffix(templateName, "index.gohtml") {
+				templateName = strings.Replace(templateName, "index.gohtml", "", -1)
+			}
 
 			if strings.HasSuffix(path, "app.gohtml") {
 				templateName += "app"
@@ -78,20 +86,16 @@ func LoadTemplates(r *gin.Engine) {
 			parsing = append(parsing, templateFiles...)
 			parsing = append(parsing, path)
 
-			tmpl[templateName] = template.Must(template.ParseFiles(parsing...))
+			templateName = strings.TrimSuffix(templateName, "/")
 
-			if strings.HasPrefix(templateName, "admin") {
-				fmt.Println("Serving " + relPath + " as admin at /" + templateName)
-				themPath := strings.Replace(templateName, "admin", "", 1)
-				adminGroup.GET("/"+themPath, handler)
-			} else if strings.HasPrefix(templateName, "dev") {
-				fmt.Println("Serving " + relPath + " as dev at /" + templateName)
-				themPath := strings.Replace(templateName, "dev", "", 1)
-				devGroup.GET("/"+themPath, handler)
-			} else {
-				fmt.Println("Serving " + relPath + " at /" + templateName)
-				r.GET("/"+templateName, handler)
+			if templateName == "" {
+				templateName = "."
 			}
+
+			tmpl[templateName] = template.Must(template.ParseFS(env.Files, parsing...))
+
+			log.Println("Serving " + relPath + " at /" + templateName)
+			r.GET("/"+templateName, handler)
 		}
 
 		return nil
@@ -127,31 +131,33 @@ func handler(c *gin.Context) {
 	if err != nil {
 		// If there's an error executing the templates, return a 500 error
 		c.String(http.StatusInternalServerError, "Internal Server Error")
-		fmt.Println("Error executing template:", err)
+		log.Println("Error executing templates:", err)
 		return
 	}
 }
 
 func LoadServerAssets(r *gin.Engine) {
-	fmt.Println("Loading assets...")
+	log.Println("Loading assets...")
 	// Walk through the "assets" folder and all its subdirectories
-	err := filepath.Walk("web/assets", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
+	err := WalkFS(env.Files, "web/assets", func(path string, name string, isDir bool) error {
 		// Check if the file is not a directory
-		if !info.IsDir() {
+		if !isDir {
 			// Get the directory path (relative to the "public" folder)
-			relPath, err := filepath.Rel("web/assets", path)
+			relPath, err := RelFS("web/assets", path)
 			if err != nil {
 				return err
 			}
 
 			assetPath := strings.Replace(relPath, "\\", "/", -1)
+
+			//Cut first / from path
+			if strings.HasPrefix(assetPath, "/") {
+				assetPath = strings.Replace(assetPath, "/", "", 1)
+			}
+
 			// Add the asset to a route
-			fmt.Println("Serving " + path + " at /assets/" + assetPath)
-			r.StaticFile("/assets/"+assetPath, path)
+			log.Println("Serving " + path + " at /assets/" + assetPath)
+			r.StaticFileFS("/assets/"+assetPath, path, http.FS(env.Files))
 
 			if err != nil {
 				return err
@@ -161,9 +167,46 @@ func LoadServerAssets(r *gin.Engine) {
 		return nil
 	})
 
-	r.StaticFile("/favicon.ico", "./web/static/favicon.ico")
-
 	if err != nil {
 		panic(err)
 	}
+
+	r.StaticFileFS("/favicon.ico", "web/static/favicon.ico", http.FS(env.Files))
+}
+
+// Funky self recursive function to walk through the embed.FS
+func WalkFS(fs embed.FS, root string, fn func(path string, name string, isDir bool) error) error {
+	entries, err := fs.ReadDir(root)
+	if err != nil {
+		return err
+	}
+
+	for _, entry := range entries {
+		fullPath := filepath.Join(root, entry.Name())
+		fullPath = filepath.ToSlash(fullPath)
+		if entry.IsDir() {
+			if err := fn(fullPath, entry.Name(), true); err != nil {
+				return err
+			}
+			err := WalkFS(fs, fullPath, fn)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+		if err := fn(fullPath, entry.Name(), false); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Funky function to rel the embed.FS
+func RelFS(basepath, targpath string) (string, error) {
+	basepath = filepath.ToSlash(basepath)
+	targpath = filepath.ToSlash(targpath)
+	if !strings.HasPrefix(targpath, basepath) {
+		return "", filepath.ErrBadPattern
+	}
+	return targpath[len(basepath):], nil
 }
