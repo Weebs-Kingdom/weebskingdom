@@ -27,6 +27,18 @@ func InitApi(r *gin.Engine) {
 	initApis(apiAuth)
 	initUserApi(userAuth)
 	initAdminApi(adminAuth)
+	initSickUrls(r)
+}
+
+func initSickUrls(r *gin.Engine) {
+	discordUrl := "https://discord.gg/gK8F7kuybv"
+	r.GET("/discord", func(c *gin.Context) {
+		c.Redirect(302, discordUrl)
+	})
+
+	r.GET("/disc", func(c *gin.Context) {
+		c.Redirect(302, discordUrl)
+	})
 }
 
 func initUserApi(r *gin.RouterGroup) {
@@ -232,7 +244,6 @@ func initApis(r *gin.RouterGroup) {
 				})
 				return
 			}
-
 			if crypt.CheckPasswordHash(login.Password, dUser.Password) {
 				token, err := crypt.GenerateLoginToken(dUser.ID)
 				if err != nil {
